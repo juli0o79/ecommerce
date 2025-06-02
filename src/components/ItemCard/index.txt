@@ -1,0 +1,187 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+interface CardWithImageSliderProps {
+  images?: string[];
+  title: string;
+  subtitle: string;
+  price: number; // Ex: 123.45
+  rating: number; // De 0 a 5
+}
+
+const Card = styled.div`
+  background-color: white;
+  width: 312px;
+  height: 382px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px 0px rgba(32, 38, 36, 0.16);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Averta Std', sans-serif;
+`;
+
+const ImageContainer = styled.div<{ hasImages: boolean }>`
+  width: 100%;
+  height: 192px;
+  background-color: ${({ hasImages }) => (hasImages ? '#f0f0f0' : '#d3d3d3')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+`;
+
+const SliderWrapper = styled.div<{ translatex: number }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: translateX(${(props) => props.translatex}%);
+  transition: transform 0.5s ease-in-out;
+`;
+
+const Slide = styled.img`
+  min-width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const Arrow = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 100%;
+  padding: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1;
+  color: #434645;
+width: 32px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
+`;
+
+const LeftArrow = styled(Arrow)`
+  left: 8px;
+`;
+
+const RightArrow = styled(Arrow)`
+  right: 8px;
+`;
+
+const FallbackMessage = styled.p`
+  color: #666;
+  font-size: 14px;
+  padding: 8px;
+  text-align: center;
+`;
+
+const Content = styled.div`
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+const Title = styled.h2`
+  font-size: 24px;
+  color: #434645;
+  font-weight: 400;
+  margin: 0;
+`;
+
+const Subtitle = styled.p`
+  font-size: 12px;
+  color: #999e9c;
+  margin: 0;
+`;
+
+const Price = styled.div`
+  font-weight: bold;
+  color: #434645;
+  font-size: 32px;
+`;
+
+const Centavos = styled.span`
+  font-size: 16px;
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
+const Star = styled.span<{ filled: boolean }>`
+  color: ${({ filled }) => (filled ? '#FFD700' : '#ccc')};
+  font-size: 16px;
+`;
+
+export const CardWithImageSlider: React.FC<CardWithImageSliderProps> = ({
+  images,
+  title,
+  subtitle,
+  price,
+  rating,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const hasImages = images && images.length > 0;
+
+  const handlePrev = () => {
+    if (images) {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    }
+  };
+
+  const handleNext = () => {
+    if (images) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }
+  };
+
+  const truncate = (text: string, maxLength: number) => {
+  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+};
+
+  // Format price
+  const priceParts = price.toFixed(2).split('.');
+  const reais = priceParts[0];
+  const centavos = priceParts[1];
+
+  return (
+    <Card>
+      <ImageContainer hasImages={!!hasImages}>
+        {hasImages ? (
+          <>
+            <LeftArrow onClick={handlePrev}>&lt;</LeftArrow>
+            <SliderWrapper translatex={-currentIndex * 100}>
+              {images.map((src, index) => (
+                <Slide key={index} src={src} alt={`Slide ${index + 1}`} />
+              ))}
+            </SliderWrapper>
+            <RightArrow onClick={handleNext}>&gt;</RightArrow>
+          </>
+        ) : (
+          <FallbackMessage>Awaiting images to display...</FallbackMessage>
+        )}
+      </ImageContainer>
+      <Content>
+        <Title>{truncate(title, 21)}</Title>
+        <Subtitle>{subtitle}</Subtitle>
+         <RatingContainer>
+          {Array.from({ length: 5 }, (_, i) => (
+            <Star key={i} filled={i < rating}>
+              {i < rating ? '★' : '☆'}
+            </Star>
+          ))}
+        </RatingContainer>
+        <Price>
+          R$ {reais}
+          <Centavos>,{centavos}</Centavos>
+        </Price>
+      </Content>
+    </Card>
+  );
+};
