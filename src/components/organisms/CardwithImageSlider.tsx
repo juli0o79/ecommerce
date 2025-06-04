@@ -5,6 +5,7 @@ import { RatingStars } from '../molecules/RatingStars';
 import { Price, Centavos } from '../atoms/PriceText';
 
 const Card = styled.div`
+  overflow: hidden;
   background-color: white;
   width: 312px;
   height: 342px;

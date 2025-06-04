@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ButtonArrow } from '../atoms/ButtonArrow';
 
-const ImageContainer = styled.div<{ hasImages: boolean }>`
+const ImageContainer = styled.div<{ hasimages: boolean }>`
   width: 100%;
   height: 192px;
-  background-color: ${({ hasImages }) => (hasImages ? '#f0f0f0' : '#d3d3d3')};
+  background-color: ${({ hasimages }) => (hasimages ? '#f0f0f0' : '#d3d3d3')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,7 +55,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   };
 
   return (
-    <ImageContainer hasImages={!!hasImages}>
+    <ImageContainer hasimages={!!hasImages}>
       {hasImages ? (
         <>
           <ButtonArrow style={{ left: 8 }} onClick={handlePrev}>

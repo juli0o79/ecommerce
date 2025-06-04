@@ -23,9 +23,10 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  body {
-    font-family: 'Averta Std', sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-  }
+    html,
+    body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+
 `;
