@@ -16,7 +16,7 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
   return (
     <RatingContainer>
       {Array.from({ length: 5 }, (_, i) => (
-        <Star key={i} filled={i < rating}>
+        <Star key={i} $filled={i < rating}>
           {i < rating ? '★' : '☆'}
         </Star>
       ))}

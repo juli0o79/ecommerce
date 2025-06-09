@@ -53,9 +53,9 @@ function page() {
       <BackgroundSlider images={images} />
       <div style={{ width: '100%' }}>
         <Grid>
-          {fakeArray.map(() => {
+          {fakeArray.map((_, index) => {
             return (
-              <CardWithImageSlider images={images} title="Cadeira de escritório - Loyal Trend"
+              <CardWithImageSlider key={index} images={images} title="Cadeira de escritório - Loyal Trend"
                 subtitle="Ergonômica com apoio"
                 rating={4}
                 price={399.99} />

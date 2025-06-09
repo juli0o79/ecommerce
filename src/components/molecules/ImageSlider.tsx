@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { ButtonArrow } from '../atoms/ButtonArrow';
+import { getWindowWidth } from '@/Utils/GetWindowWidth';
 
-const ImageContainer = styled.div<{ hasimages: boolean }>`
+const ImageContainer = styled.div<{ $hasimages: boolean }>`
   width: 100%;
-  height: 192px;
-  background-color: ${({ hasimages }) => (hasimages ? '#f0f0f0' : '#d3d3d3')};
+  height: 392px;
+  background-color: ${({ $hasimages }) => ($hasimages ? '#f0f0f0' : '#d3d3d3')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,12 +14,12 @@ const ImageContainer = styled.div<{ hasimages: boolean }>`
   overflow: hidden;
 `;
 
-const SliderWrapper = styled.div<{ translatex: number }>`
+const SliderWrapper = styled.div<{ translatex: number; $isdragging: boolean }>`
   display: flex;
   width: 100%;
   height: 100%;
   transform: translateX(${(props) => props.translatex}%);
-  transition: transform 0.5s ease-in-out;
+  transition: ${(props) => (props.$isdragging ? 'none' : 'transform 0.3s ease-in-out')};
 `;
 
 const Slide = styled.img`
@@ -40,7 +41,12 @@ interface ImageSliderProps {
 
 export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
   const hasImages = images && images.length > 0;
+
+  const startX = useRef<number | null>(null);
 
   const handlePrev = () => {
     if (images) {
@@ -54,14 +60,50 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
     }
   };
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX;
+    setIsDragging(true);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (startX.current !== null) {
+      const delta = e.touches[0].clientX - startX.current;
+      setDragOffset(delta);
+      // ❗️Não precisa mais do preventDefault
+    }
+  };
+
+  const onTouchEnd = () => {
+    if (startX.current !== null) {
+      const threshold = 50; // mínimo para considerar como swipe
+      if (dragOffset < -threshold) {
+        handleNext();
+      } else if (dragOffset > threshold) {
+        handlePrev();
+      }
+    }
+    setDragOffset(0);
+    setIsDragging(false);
+    startX.current = null;
+  };
+
+  const windowWidth = getWindowWidth();
+  const totalTranslate = -currentIndex * 100 + (dragOffset / windowWidth) * 100;
+
   return (
-    <ImageContainer hasimages={!!hasImages}>
+    <ImageContainer
+      $hasimages={!!hasImages}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      style={{ touchAction: 'pan-y' }} // ✅ permite scroll vertical e bloqueia swipe horizontal
+    >
       {hasImages ? (
         <>
           <ButtonArrow style={{ left: 8 }} onClick={handlePrev}>
             &lt;
           </ButtonArrow>
-          <SliderWrapper translatex={-currentIndex * 100}>
+          <SliderWrapper translatex={totalTranslate} $isdragging={isDragging}>
             {images.map((src, index) => (
               <Slide key={index} src={src} alt={`Slide ${index + 1}`} />
             ))}

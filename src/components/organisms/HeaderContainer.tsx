@@ -5,6 +5,7 @@ import SearchInput from '../molecules/SearchInput';
 import MarketCartIcon from '../atoms/CartIcon';
 import MobileIcon from '../atoms/MobileLogo';
 import HamburgerIcon from '../atoms/HamburguerMenuIcon';
+import UserLoginIcon from '../atoms/UserLoginIcon';
 
 export const HeaderContainer = styled.div`
   top: 0;
@@ -58,6 +59,7 @@ function Header() {
           <>
             <Logo />
             <SearchInput />
+            <UserLoginIcon />
             <MarketCartIcon />
           </>
         )}

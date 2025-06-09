@@ -1,95 +1,85 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import Header from '@/components/organisms/HeaderContainer';
+import { BackgroundSlider } from '@/components/organisms/BackgroundSlider';
+import { CardWithImageSlider } from '@/components/organisms/CardwithImageSlider';
+import React from 'react'
+import styled from 'styled-components'
+import Footer from '@/components/organisms/Footer';
+const PageContainer = styled.div`
+  max-width: 1080px;
+  width: 100%;
+  margin: auto;
+  padding-bottom: 320px;
+   @media (max-width: 680px) {
+    padding-bottom: 760px;
+  }
 
-export default function Home() {
+`;
+
+const Grid = styled.div`
+  margin: 12px 0px;
+  display: grid;
+  grid-template-columns: repeat(3, 312px);
+  gap: 72px;
+  justify-content: center; /* Always center grid horizontally */
+
+  div {
+    width: 312px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* If screen is less than 1080px, switch to 2 columns */
+  @media (max-width: 1080px) {
+    grid-template-columns: repeat(2, 312px);
+  }
+
+  /* If screen is less than 680px, switch to 1 column */
+  @media (max-width: 680px) {
+    grid-template-columns: repeat(1, 312px);
+  }
+`;
+
+
+
+function Home() {
+  const images = [
+    'https://fastly.picsum.photos/id/7/4728/3168.jpg?hmac=c5B5tfYFM9blHHMhuu4UKmhnbZoJqrzNOP9xjkV4w3o',
+    'https://fastly.picsum.photos/id/20/3670/2462.jpg?hmac=CmQ0ln-k5ZqkdtLvVO23LjVAEabZQx2wOaT4pyeG10I',
+    'https://fastly.picsum.photos/id/26/4209/2769.jpg?hmac=vcInmowFvPCyKGtV7Vfh7zWcA_Z0kStrPDW3ppP0iGI',
+  ];
+
+  
+const footerData = [
+  ['Institutional', 'About Us', 'Careers', 'Contact'],
+  ['Support', 'FAQ', 'Shipping', 'Returns'],
+  ['Legal', 'Privacy Policy', 'Terms of Service'],
+  ['Social', 'Facebook', 'Instagram', 'Twitter'],
+];
+  const fakeArray = Array(9).fill(null);
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <PageContainer>
+      <Header>
+      </Header>
+      <BackgroundSlider images={images} />
+      <div style={{ width: '100%' }}>
+        <Grid>
+          {fakeArray.map((_, index) => {
+            return (
+              <CardWithImageSlider key={index} images={images} title="Cadeira de escritório - Loyal Trend"
+                subtitle="Ergonômica com apoio"
+                rating={4}
+                price={399.99} />
+            )
+          })}
+        </Grid>
+      </div >
+      <Footer columns={footerData}/>
+    </PageContainer>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
   );
 }
+
+export default Home;

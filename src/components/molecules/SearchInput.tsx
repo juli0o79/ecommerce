@@ -26,6 +26,7 @@ const Input = styled.input`
   outline: none;
   font-size: 0.875rem; /* text-sm */
   color: #111827; /* gray-900 */
+  cursor: pointer;
   
   &::placeholder {
     color: #9ca3af; /* gray-400 */
