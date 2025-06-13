@@ -1,10 +1,10 @@
 'use client';
 import Header from '@/components/organisms/HeaderContainer';
-import { BackgroundSlider } from '@/components/organisms/BackgroundSlider';
 import { CardWithImageSlider } from '@/components/organisms/CardwithImageSlider';
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Footer from '@/components/organisms/Footer';
+import ProductShowcase from '@/components/organisms/ProductShowCase';
 const PageContainer = styled.div`
   max-width: 1080px;
   width: 100%;
@@ -51,6 +51,8 @@ function Home() {
     'https://fastly.picsum.photos/id/26/4209/2769.jpg?hmac=vcInmowFvPCyKGtV7Vfh7zWcA_Z0kStrPDW3ppP0iGI',
   ];
 
+  useEffect(() => console.log('page is ready'), []);
+
   
 const footerData = [
   ['Institutional', 'About Us', 'Careers', 'Contact'],
@@ -63,8 +65,17 @@ const footerData = [
     <PageContainer>
       <Header>
       </Header>
-      <BackgroundSlider images={images} />
-      <div style={{ width: '100%' }}>
+      {/* <BackgroundSlider images={images} /> */}
+      <ProductShowcase products={[
+        {description: "product description", src: images[0], id:'product1'},
+        {description: "product description", src: images[1], id:'product2'},
+        {description: "product description", src: images[2], id:'product3'},
+         {description: "product description", src: images[0], id:'product1'},
+         {description: "product description", src: images[1], id:'product2'},
+        {description: "product description", src: images[2], id:'product3'},
+          {description: "product description", src: images[0], id:'product1'},
+    ]} />
+      <div style={{ width: '100%', marginTop: '624px' }}>
         <Grid>
           {fakeArray.map((_, index) => {
             return (

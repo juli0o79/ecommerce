@@ -28,6 +28,7 @@ export const GlobalStyle = createGlobalStyle`
       max-width: 100vw;
       overflow-x: hidden;
       position: relative;
+      background-color: #e8eae9;
       
     }
 

@@ -51,10 +51,10 @@ function Header() {
         {isMobile ? (
           <>
             <MobileIcon />
-           <SearchInput />
-            <HamburgerIcon/>
+            <SearchInput />
+            <HamburgerIcon />
           </>
-         
+
         ) : (
           <>
             <Logo />

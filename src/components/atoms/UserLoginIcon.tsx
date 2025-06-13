@@ -13,6 +13,8 @@ export default function UserLoginIcon() {
       stroke="currentColor"
       strokeWidth="2"
       viewBox="0 0 24 24"
+      width="16"
+      height="16"
     >
       <circle cx="12" cy="7" r="4" />
       <path d="M5.5 21a9.5 9.5 0 0 1 13 0" />
